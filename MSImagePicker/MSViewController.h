@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MSImagePickerController.h"
 
-@interface MSViewController : UIViewController
+@interface MSViewController : UIViewController <MSImagePickerControllerDelegate>
+
+- (IBAction)launchImagePicker:(id)sender;
 
 @end

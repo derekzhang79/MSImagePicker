@@ -21,6 +21,11 @@
 		A6D80C1917FBD52D000E42FB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6D80BFB17FBD52D000E42FB /* UIKit.framework */; };
 		A6D80C2117FBD52D000E42FB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A6D80C1F17FBD52D000E42FB /* InfoPlist.strings */; };
 		A6D80C2317FBD52D000E42FB /* MSImagePickerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A6D80C2217FBD52D000E42FB /* MSImagePickerTests.m */; };
+		A6D80C2D17FBD6F3000E42FB /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6D80C2C17FBD6F3000E42FB /* AssetsLibrary.framework */; };
+		A6D80C3117FBDDD2000E42FB /* MSImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6D80C3017FBDDD2000E42FB /* MSImagePickerController.m */; };
+		A6D80C3417FBE27A000E42FB /* MSAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6D80C3317FBE27A000E42FB /* MSAlbumViewController.m */; };
+		A6D80C3717FBFA27000E42FB /* MSTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A6D80C3617FBFA27000E42FB /* MSTableViewCell.m */; };
+		A6D80C3B17FBFD5D000E42FB /* MSImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6D80C3A17FBFD5D000E42FB /* MSImageViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +58,15 @@
 		A6D80C1E17FBD52D000E42FB /* MSImagePickerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MSImagePickerTests-Info.plist"; sourceTree = "<group>"; };
 		A6D80C2017FBD52D000E42FB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A6D80C2217FBD52D000E42FB /* MSImagePickerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MSImagePickerTests.m; sourceTree = "<group>"; };
+		A6D80C2C17FBD6F3000E42FB /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		A6D80C2F17FBDDD2000E42FB /* MSImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSImagePickerController.h; sourceTree = "<group>"; };
+		A6D80C3017FBDDD2000E42FB /* MSImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSImagePickerController.m; sourceTree = "<group>"; };
+		A6D80C3217FBE27A000E42FB /* MSAlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MSAlbumViewController.h; path = Class/MSAlbumViewController.h; sourceTree = "<group>"; };
+		A6D80C3317FBE27A000E42FB /* MSAlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MSAlbumViewController.m; path = Class/MSAlbumViewController.m; sourceTree = "<group>"; };
+		A6D80C3517FBFA27000E42FB /* MSTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MSTableViewCell.h; path = Class/MSTableViewCell.h; sourceTree = "<group>"; };
+		A6D80C3617FBFA27000E42FB /* MSTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MSTableViewCell.m; path = Class/MSTableViewCell.m; sourceTree = "<group>"; };
+		A6D80C3917FBFD5D000E42FB /* MSImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSImageViewController.h; sourceTree = "<group>"; };
+		A6D80C3A17FBFD5D000E42FB /* MSImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSImageViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6D80C2D17FBD6F3000E42FB /* AssetsLibrary.framework in Frameworks */,
 				A6D80BFA17FBD52D000E42FB /* CoreGraphics.framework in Frameworks */,
 				A6D80BFC17FBD52D000E42FB /* UIKit.framework in Frameworks */,
 				A6D80BF817FBD52D000E42FB /* Foundation.framework in Frameworks */,
@@ -101,6 +116,7 @@
 		A6D80BF617FBD52D000E42FB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A6D80C2C17FBD6F3000E42FB /* AssetsLibrary.framework */,
 				A6D80BF717FBD52D000E42FB /* Foundation.framework */,
 				A6D80BF917FBD52D000E42FB /* CoreGraphics.framework */,
 				A6D80BFB17FBD52D000E42FB /* UIKit.framework */,
@@ -112,6 +128,7 @@
 		A6D80BFD17FBD52D000E42FB /* MSImagePicker */ = {
 			isa = PBXGroup;
 			children = (
+				A6D80C2E17FBD701000E42FB /* Class */,
 				A6D80C0617FBD52D000E42FB /* MSAppDelegate.h */,
 				A6D80C0717FBD52D000E42FB /* MSAppDelegate.m */,
 				A6D80C0917FBD52D000E42FB /* Main.storyboard */,
@@ -150,6 +167,29 @@
 				A6D80C1F17FBD52D000E42FB /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A6D80C2E17FBD701000E42FB /* Class */ = {
+			isa = PBXGroup;
+			children = (
+				A6D80C3817FBFA84000E42FB /* View */,
+				A6D80C2F17FBDDD2000E42FB /* MSImagePickerController.h */,
+				A6D80C3017FBDDD2000E42FB /* MSImagePickerController.m */,
+				A6D80C3217FBE27A000E42FB /* MSAlbumViewController.h */,
+				A6D80C3317FBE27A000E42FB /* MSAlbumViewController.m */,
+				A6D80C3917FBFD5D000E42FB /* MSImageViewController.h */,
+				A6D80C3A17FBFD5D000E42FB /* MSImageViewController.m */,
+			);
+			name = Class;
+			sourceTree = "<group>";
+		};
+		A6D80C3817FBFA84000E42FB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A6D80C3517FBFA27000E42FB /* MSTableViewCell.h */,
+				A6D80C3617FBFA27000E42FB /* MSTableViewCell.m */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -250,9 +290,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6D80C3417FBE27A000E42FB /* MSAlbumViewController.m in Sources */,
 				A6D80C0817FBD52D000E42FB /* MSAppDelegate.m in Sources */,
 				A6D80C0E17FBD52D000E42FB /* MSViewController.m in Sources */,
 				A6D80C0417FBD52D000E42FB /* main.m in Sources */,
+				A6D80C3117FBDDD2000E42FB /* MSImagePickerController.m in Sources */,
+				A6D80C3717FBFA27000E42FB /* MSTableViewCell.m in Sources */,
+				A6D80C3B17FBFD5D000E42FB /* MSImageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,6 +505,7 @@
 				A6D80C2817FBD52D000E42FB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A6D80C2917FBD52D000E42FB /* Build configuration list for PBXNativeTarget "MSImagePickerTests" */ = {
 			isa = XCConfigurationList;
@@ -469,6 +514,7 @@
 				A6D80C2B17FBD52D000E42FB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

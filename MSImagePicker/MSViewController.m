@@ -7,10 +7,7 @@
 //
 
 #import "MSViewController.h"
-
-@interface MSViewController ()
-
-@end
+#import "MSImagePickerController.h"
 
 @implementation MSViewController
 
@@ -24,6 +21,29 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+- (void)launchImagePicker:(id)sender
+{
+    MSImagePickerController *picker = [[MSImagePickerController alloc] init];
+    picker.delegate = self;
+    
+    [self presentViewController:picker animated:YES completion:^{
+        
+    }];
+}
+
+
+- (void)MSImagePickerControllerDidCancel:(MSImagePickerController *)picker
+{
+    NSLog(@"image picker controller did cancel");
+}
+
+
+- (void)MSImagePickerController:(MSImagePickerController *)picker didFinishPickingMediaWithInfo:(NSArray *)info
+{
+    NSLog(@"image picker controller did finish");
 }
 
 @end
