@@ -7,13 +7,14 @@
 //
 
 #import "MSImageViewController.h"
-
+#import "MSImagePickerController.h"
 
 #pragma mark -
 #pragma Image View Cell
 @interface ImageViewCell : UICollectionViewCell
 
 @property (nonatomic, strong, readonly) UIImageView *imageView;
+@property (nonatomic, strong) UIImageView *overlayImageView;
 
 @end
 
@@ -23,12 +24,24 @@
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self != nil) {
+    if (self) {
         _imageView = [[UIImageView alloc] initWithFrame:self.contentView.bounds];
         _imageView.contentMode = UIViewContentModeScaleAspectFit;
         [self.contentView addSubview:_imageView];
     }
     return self;
+}
+
+
+- (void)setOverlayImageView:(UIImageView *)overlayImageView
+{
+    if (overlayImageView == nil) {
+        [self.overlayImageView removeFromSuperview];
+    }
+    else {
+        _overlayImageView = overlayImageView;
+        [self.imageView addSubview:overlayImageView];
+    }
 }
 
 @end
@@ -38,6 +51,7 @@
 #pragma Photo View Controller
 @interface MSImageViewController () {
     NSMutableArray *_assets;
+    NSMutableArray *_selectedAssets;
 }
 
 - (void)loadPhotos;
@@ -65,14 +79,15 @@
     layout.itemSize = CGSizeMake(75.0f, 75.0f);
     layout.minimumInteritemSpacing = 4.0f;
     layout.minimumLineSpacing = 4.0f;
-    
+ 
+    _assets = [[NSMutableArray alloc] init];
+    _selectedAssets = [[NSMutableArray alloc] init];
     [self loadPhotos];
 }
 
 
 - (void)loadPhotos
 {
-    _assets = [[NSMutableArray alloc] init];
     [self.assetsGroup enumerateAssetsWithOptions:NSEnumerationReverse
                                       usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
         if (result == nil) {
@@ -88,10 +103,25 @@
 
 - (void)doneAction
 {
-    NSLog(@"done action");
-    [self dismissViewControllerAnimated:YES completion:^{
+    NSMutableArray *returnArray = [[NSMutableArray alloc] init];
+    for (ALAsset *asset in _selectedAssets) {
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
         
-    }];
+        UIImage *img = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage
+                                           scale:[[UIScreen mainScreen] scale]
+                                     orientation:(UIImageOrientation)asset.defaultRepresentation.orientation];
+        dict[UIImagePickerControllerOriginalImage] = img;
+        dict[UIImagePickerControllerMediaType] = [asset valueForProperty:ALAssetPropertyType];
+        dict[UIImagePickerControllerReferenceURL] = [asset valueForProperty:ALAssetPropertyAssetURL];
+        
+        [returnArray addObject:dict];
+    }
+
+    MSImagePickerController *picker = (MSImagePickerController *)self.navigationController;
+    if (picker.delegate &&
+        [picker.delegate respondsToSelector:@selector(MSImagePickerController:didFinishPickingMediaWithInfo:)]) {
+        [picker.delegate MSImagePickerController:picker didFinishPickingMediaWithInfo:returnArray];
+    }
 }
 
 
@@ -117,12 +147,19 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"select %@", indexPath);
+    ImageViewCell *cell = (ImageViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+    cell.overlayImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"overlay"]];
+    
+    [_selectedAssets addObject:[_assets objectAtIndex:indexPath.row]];
 }
+
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"unselect %@", indexPath);
+    ImageViewCell *cell = (ImageViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+    [cell.overlayImageView removeFromSuperview];
+    
+    [_selectedAssets removeObject:[_assets objectAtIndex:indexPath.row]];
 }
 
 

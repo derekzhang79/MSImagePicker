@@ -9,8 +9,28 @@
 #import "MSAlbumViewController.h"
 #import "MSImagePickerController.h"
 #import "MSImageViewController.h"
-#import "MSTableViewCell.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+
+
+#pragma mark -
+#pragma Table View Cell
+
+@interface MSTableViewCell : UITableViewCell
+@end
+
+@implementation MSTableViewCell
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    // customize the position of imageview
+    self.imageView.frame = CGRectMake( 10, 10, 75, 75 );
+}
+
+@end
+
+
+#pragma mark -
+#pragma Album View Controller
 
 @interface MSAlbumViewController () {
     ALAssetsLibrary *_assetsLibrary;

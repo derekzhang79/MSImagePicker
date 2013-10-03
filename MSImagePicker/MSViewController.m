@@ -9,6 +9,7 @@
 #import "MSViewController.h"
 #import "MSImagePickerController.h"
 
+
 @implementation MSViewController
 
 - (void)viewDidLoad
@@ -16,6 +17,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
 }
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -43,7 +45,12 @@
 
 - (void)MSImagePickerController:(MSImagePickerController *)picker didFinishPickingMediaWithInfo:(NSArray *)info
 {
-    NSLog(@"image picker controller did finish");
+    for (NSDictionary *dict in info) {
+        NSLog(@"%@", dict);
+    }
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+    }];
 }
 
 @end

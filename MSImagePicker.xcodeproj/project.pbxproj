@@ -24,7 +24,6 @@
 		A6D80C2D17FBD6F3000E42FB /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6D80C2C17FBD6F3000E42FB /* AssetsLibrary.framework */; };
 		A6D80C3117FBDDD2000E42FB /* MSImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6D80C3017FBDDD2000E42FB /* MSImagePickerController.m */; };
 		A6D80C3417FBE27A000E42FB /* MSAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6D80C3317FBE27A000E42FB /* MSAlbumViewController.m */; };
-		A6D80C3717FBFA27000E42FB /* MSTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A6D80C3617FBFA27000E42FB /* MSTableViewCell.m */; };
 		A6D80C3B17FBFD5D000E42FB /* MSImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6D80C3A17FBFD5D000E42FB /* MSImageViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -63,8 +62,6 @@
 		A6D80C3017FBDDD2000E42FB /* MSImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSImagePickerController.m; sourceTree = "<group>"; };
 		A6D80C3217FBE27A000E42FB /* MSAlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MSAlbumViewController.h; path = Class/MSAlbumViewController.h; sourceTree = "<group>"; };
 		A6D80C3317FBE27A000E42FB /* MSAlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MSAlbumViewController.m; path = Class/MSAlbumViewController.m; sourceTree = "<group>"; };
-		A6D80C3517FBFA27000E42FB /* MSTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MSTableViewCell.h; path = Class/MSTableViewCell.h; sourceTree = "<group>"; };
-		A6D80C3617FBFA27000E42FB /* MSTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MSTableViewCell.m; path = Class/MSTableViewCell.m; sourceTree = "<group>"; };
 		A6D80C3917FBFD5D000E42FB /* MSImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSImageViewController.h; sourceTree = "<group>"; };
 		A6D80C3A17FBFD5D000E42FB /* MSImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSImageViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -172,7 +169,6 @@
 		A6D80C2E17FBD701000E42FB /* Class */ = {
 			isa = PBXGroup;
 			children = (
-				A6D80C3817FBFA84000E42FB /* View */,
 				A6D80C2F17FBDDD2000E42FB /* MSImagePickerController.h */,
 				A6D80C3017FBDDD2000E42FB /* MSImagePickerController.m */,
 				A6D80C3217FBE27A000E42FB /* MSAlbumViewController.h */,
@@ -181,15 +177,6 @@
 				A6D80C3A17FBFD5D000E42FB /* MSImageViewController.m */,
 			);
 			name = Class;
-			sourceTree = "<group>";
-		};
-		A6D80C3817FBFA84000E42FB /* View */ = {
-			isa = PBXGroup;
-			children = (
-				A6D80C3517FBFA27000E42FB /* MSTableViewCell.h */,
-				A6D80C3617FBFA27000E42FB /* MSTableViewCell.m */,
-			);
-			name = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -295,7 +282,6 @@
 				A6D80C0E17FBD52D000E42FB /* MSViewController.m in Sources */,
 				A6D80C0417FBD52D000E42FB /* main.m in Sources */,
 				A6D80C3117FBDDD2000E42FB /* MSImagePickerController.m in Sources */,
-				A6D80C3717FBFA27000E42FB /* MSTableViewCell.m in Sources */,
 				A6D80C3B17FBFD5D000E42FB /* MSImageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
