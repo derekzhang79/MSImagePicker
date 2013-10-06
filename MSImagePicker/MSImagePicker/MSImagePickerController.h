@@ -14,6 +14,12 @@
 @protocol MSImagePickerControllerDelegate <UINavigationControllerDelegate>
 
 - (void)MSImagePickerController:(MSImagePickerController *)picker didFinishPickingMediaWithInfo:(NSArray *)info;
+
+@optional
+- (void)MSImagePickerController:(MSImagePickerController *)picker didSelectMediaWithInfo:(NSDictionary *)info;
+- (void)MSImagePickerController:(MSImagePickerController *)picker didDeselectMediaWithInfo:(NSDictionary *)info;
+
+- (void)MSImagePickerController:(MSImagePickerController *)picker didFailAccessingALAssetsLibraryWithError:(NSError *)error;
 - (void)MSImagePickerControllerDidCancel:(MSImagePickerController *)picker;
 
 @end
@@ -22,7 +28,5 @@
 @interface MSImagePickerController : UINavigationController
 
 @property (nonatomic, weak) id<MSImagePickerControllerDelegate> delegate;
-
-- (void)cancelImagePicker;
 
 @end

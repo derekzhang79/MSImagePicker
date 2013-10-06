@@ -55,11 +55,24 @@
 }
 
 - (void)loadPhotos;
+- (void)finishPickingMedia;
+- (NSDictionary *)makeMediaInfoWithAsset:(ALAsset *)asset;
 
 @end
 
 
 @implementation MSImageViewController
+
+static NSString *PhotoCellIdentifier = @"PhotoCellIdentifier";
+
+- (UIImage *)selectionImage
+{
+    if (!_selectionImage) {
+        _selectionImage = [UIImage imageNamed:@"overlay"];
+    }
+    return _selectionImage;
+}
+
 
 - (void)viewDidLoad
 {
@@ -68,11 +81,11 @@
     self.navigationItem.title = @"Select Photos";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                            target:self
-                                                                                           action:@selector(doneAction)];
+                                                                                           action:@selector(finishPickingMedia)];
     self.collectionView.backgroundColor = [UIColor whiteColor];
     self.collectionView.allowsSelection = YES;
     self.collectionView.allowsMultipleSelection = YES;
-    [self.collectionView registerClass:[ImageViewCell class] forCellWithReuseIdentifier:@"PhotoCellIdentifier"];
+    [self.collectionView registerClass:[ImageViewCell class] forCellWithReuseIdentifier:PhotoCellIdentifier];
     
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionViewLayout;
     layout.sectionInset = UIEdgeInsetsMake(12.0f, 4.0f, 12.0f, 4.0f);
@@ -90,31 +103,20 @@
 {
     [self.assetsGroup enumerateAssetsWithOptions:NSEnumerationReverse
                                       usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
-        if (result == nil) {
-            return;
+        if (result != nil) {
+            [_assets addObject:result];
         }
-        
-        [_assets addObject:result];
     }];
     
     [self.collectionView reloadData];
 }
 
 
-- (void)doneAction
+- (void)finishPickingMedia
 {
     NSMutableArray *returnArray = [[NSMutableArray alloc] init];
     for (ALAsset *asset in _selectedAssets) {
-        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-        
-        UIImage *img = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage
-                                           scale:[[UIScreen mainScreen] scale]
-                                     orientation:(UIImageOrientation)asset.defaultRepresentation.orientation];
-        dict[UIImagePickerControllerOriginalImage] = img;
-        dict[UIImagePickerControllerMediaType] = [asset valueForProperty:ALAssetPropertyType];
-        dict[UIImagePickerControllerReferenceURL] = [asset valueForProperty:ALAssetPropertyAssetURL];
-        
-        [returnArray addObject:dict];
+        [returnArray addObject:[self makeMediaInfoWithAsset:asset]];
     }
 
     MSImagePickerController *picker = (MSImagePickerController *)self.navigationController;
@@ -125,7 +127,22 @@
 }
 
 
-#pragma mark - 
+- (NSDictionary *)makeMediaInfoWithAsset:(ALAsset *)asset
+{
+    NSMutableDictionary *info = [[NSMutableDictionary alloc] init];
+    
+    UIImage *img = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage
+                                       scale:[[UIScreen mainScreen] scale]
+                                 orientation:(UIImageOrientation)asset.defaultRepresentation.orientation];
+    info[UIImagePickerControllerOriginalImage] = img;
+    info[UIImagePickerControllerMediaType] = [asset valueForProperty:ALAssetPropertyType];
+    info[UIImagePickerControllerReferenceURL] = [asset valueForProperty:ALAssetPropertyAssetURL];
+    
+    return info;
+}
+
+
+#pragma mark -
 #pragma Collection View Data Source
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
@@ -135,7 +152,6 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *PhotoCellIdentifier = @"PhotoCellIdentifier";
     ImageViewCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:PhotoCellIdentifier
                                                                          forIndexPath:indexPath];
     ALAsset *asset = [_assets objectAtIndex:indexPath.row];
@@ -148,9 +164,16 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     ImageViewCell *cell = (ImageViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-    cell.overlayImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"overlay"]];
+    cell.overlayImageView = [[UIImageView alloc] initWithImage:self.selectionImage];
     
-    [_selectedAssets addObject:[_assets objectAtIndex:indexPath.row]];
+    ALAsset *asset = [_assets objectAtIndex:indexPath.row];
+    [_selectedAssets addObject:asset];
+    
+    MSImagePickerController *picker = (MSImagePickerController *)self.navigationController;
+    if (picker.delegate &&
+        [picker.delegate respondsToSelector:@selector(MSImagePickerController:didSelectMediaWithInfo:)]) {
+        [picker.delegate MSImagePickerController:picker didSelectMediaWithInfo:[self makeMediaInfoWithAsset:asset]];
+    }
 }
 
 
@@ -158,8 +181,15 @@
 {
     ImageViewCell *cell = (ImageViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
     [cell.overlayImageView removeFromSuperview];
+
+    ALAsset *asset = [_assets objectAtIndex:indexPath.row];
+    [_selectedAssets removeObject:asset];
     
-    [_selectedAssets removeObject:[_assets objectAtIndex:indexPath.row]];
+    MSImagePickerController *picker = (MSImagePickerController *)self.navigationController;
+    if (picker.delegate &&
+        [picker.delegate respondsToSelector:@selector(MSImagePickerController:didDeselectMediaWithInfo:)]) {
+        [picker.delegate MSImagePickerController:picker didDeselectMediaWithInfo:[self makeMediaInfoWithAsset:asset]];
+    }
 }
 
 

@@ -12,7 +12,6 @@
 @interface MSImageViewController : UICollectionViewController <UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) ALAssetsGroup *assetsGroup;
-
-- (void)doneAction;
+@property (nonatomic, strong) UIImage *selectionImage;
 
 @end

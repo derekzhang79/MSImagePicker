@@ -12,28 +12,14 @@
 
 @implementation MSViewController
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-}
-
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 
 - (void)launchImagePicker:(id)sender
 {
+    
     MSImagePickerController *picker = [[MSImagePickerController alloc] init];
     picker.delegate = self;
     
-    [self presentViewController:picker animated:YES completion:^{
-        
-    }];
+    [self presentViewController:picker animated:YES completion:NULL];
 }
 
 
@@ -45,12 +31,31 @@
 
 - (void)MSImagePickerController:(MSImagePickerController *)picker didFinishPickingMediaWithInfo:(NSArray *)info
 {
-    for (NSDictionary *dict in info) {
-        NSLog(@"%@", dict);
-    }
+    NSLog(@"did finish picking: %@", info);
+
     [self dismissViewControllerAnimated:YES completion:^{
         
     }];
 }
+
+
+- (void)MSImagePickerController:(MSImagePickerController *)picker didFailAccessingALAssetsLibraryWithError:(NSError *)error
+{
+    NSLog(@"did fail accesing asset library: %@", error.localizedFailureReason);
+}
+
+
+- (void)MSImagePickerController:(MSImagePickerController *)picker didSelectMediaWithInfo:(NSDictionary *)info
+{
+    NSLog(@"selected %@", info);
+}
+
+
+- (void)MSImagePickerController:(MSImagePickerController *)picker didDeselectMediaWithInfo:(NSDictionary *)info
+{
+    NSLog(@"Deselected %@", info);
+}
+
+
 
 @end

@@ -19,18 +19,11 @@
 
 
 - (id)initWithRootViewController:(UIViewController *)rootViewController
-{
+{    
     MSAlbumViewController *albumController = [[MSAlbumViewController alloc] initWithStyle:UITableViewStylePlain];
     return [super initWithRootViewController:albumController];
 }
 
-
-- (void)cancelImagePicker
-{
-    if ([self.delegate respondsToSelector:@selector(MSImagePickerControllerDidCancel:)]) {
-        [self.delegate MSImagePickerControllerDidCancel:self];
-    }
-}
 
 
 

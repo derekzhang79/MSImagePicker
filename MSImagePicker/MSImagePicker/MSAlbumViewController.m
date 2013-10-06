@@ -38,6 +38,7 @@
 }
 
 - (void)loadAlbums;
+- (void)cancelPickingMedia;
 
 @end
 
@@ -47,13 +48,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    MSImagePickerController *picker = (MSImagePickerController *)self.navigationController;
 
     self.navigationItem.title = @"Album";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                           target:picker
-                                                                                           action:@selector(cancelImagePicker)];
+                                                                                           target:self
+                                                                                           action:@selector(cancelPickingMedia)];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     [self loadAlbums];
@@ -71,22 +70,27 @@
         }
         
         [group setAssetsFilter:[ALAssetsFilter allPhotos]];
-
         [_albums addObject:group];
-        
         [self.tableView reloadData];
         
     } failureBlock:^(NSError *error) {
-        NSString *msg = [NSString stringWithFormat:@"Album Error: %@ - %@",
-                         [error localizedDescription],
-                         [error localizedRecoverySuggestion]];
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:msg
-                                                       delegate:nil
-                                              cancelButtonTitle:@"Ok"
-                                              otherButtonTitles:nil];
-        [alert show];
+        MSImagePickerController *picker = (MSImagePickerController *)self.navigationController;
+        if (picker.delegate &&
+            [picker.delegate respondsToSelector:@selector(MSImagePickerController:didFailAccessingALAssetsLibraryWithError:)]) {
+            [picker.delegate MSImagePickerController:picker didFailAccessingALAssetsLibraryWithError:error];
+        }
+    }];
+}
+
+
+- (void)cancelPickingMedia
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+        MSImagePickerController *picker = (MSImagePickerController *)self.navigationController;
+        if (picker.delegate &&
+            [picker.delegate respondsToSelector:@selector(MSImagePickerControllerDidCancel:)]) {
+            [picker.delegate MSImagePickerControllerDidCancel:picker];
+        }
     }];
 }
 
@@ -99,10 +103,12 @@
     return 1;
 }
 
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return _albums.count;
 }
+
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -135,10 +141,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ALAssetsGroup *group = [_albums objectAtIndex:indexPath.row];
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     MSImageViewController *controller = [[MSImageViewController alloc] initWithCollectionViewLayout:layout];
-    controller.assetsGroup = group;
+    
+    controller.assetsGroup = [_albums objectAtIndex:indexPath.row];
     
     [self.navigationController pushViewController:controller animated:YES];
 }
