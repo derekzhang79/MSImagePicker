@@ -32,6 +32,8 @@
 #pragma mark -
 #pragma Album View Controller
 
+#define DEFAULT_ROW_HEIGHT 95.0f
+
 @interface MSAlbumViewController () {
     ALAssetsLibrary *_assetsLibrary;
     NSMutableArray *_albums;
@@ -54,6 +56,7 @@
                                                                                            target:self
                                                                                            action:@selector(cancelPickingMedia)];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.rowHeight = DEFAULT_ROW_HEIGHT;
     
     [self loadAlbums];
 }
@@ -133,9 +136,10 @@
 #pragma mark -
 #pragma Table View Delegate
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 96.0f;
+    return 95.0f;
 }
 
 
