@@ -31,10 +31,14 @@
 
 - (void)MSImagePickerController:(MSImagePickerController *)picker didFinishPickingMediaWithInfo:(NSArray *)info
 {
-    NSLog(@"did finish picking: %@", info);
+    NSMutableArray *images = [[NSMutableArray alloc] initWithCapacity:info.count];
+    for (NSDictionary *dict in info) {
+        UIImage *image = [dict valueForKey:UIImagePickerControllerOriginalImage];
+        [images addObject:image];
+    }
 
     [self dismissViewControllerAnimated:YES completion:^{
-        
+        self.imageView.images = images;
     }];
 }
 

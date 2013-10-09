@@ -125,7 +125,7 @@
     ALAssetsGroup *group = [_albums objectAtIndex:indexPath.row];
     
     cell.textLabel.text = [group valueForProperty:ALAssetsGroupPropertyName];
-    cell.detailTextLabel.text =  [NSString stringWithFormat:@"%ld", group.numberOfAssets];
+    cell.detailTextLabel.text =  [NSString stringWithFormat:@"%d", group.numberOfAssets];
     [cell.imageView setImage:[UIImage imageWithCGImage:[(ALAssetsGroup*)[_albums objectAtIndex:indexPath.row] posterImage]]];
 	[cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
 	
