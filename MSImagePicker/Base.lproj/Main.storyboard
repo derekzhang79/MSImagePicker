@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="sKA-tP-EQS">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
@@ -16,31 +16,51 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y0B-7w-BQJ">
-                                <rect key="frame" x="60" y="72" width="200" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                <state key="normal" title="Pick Images">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="launchImagePicker:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Awi-76-EIT"/>
-                                </connections>
-                            </button>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nhV-IT-5H9" customClass="MSMultiImageView">
-                                <rect key="frame" x="0.0" y="164" width="320" height="240"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nhV-IT-5H9" customClass="MSMultiImageView">
+                                <rect key="frame" x="0.0" y="68" width="320" height="240"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="240" id="ehh-k7-vgF"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="nhV-IT-5H9" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="iRw-ge-5lf"/>
+                            <constraint firstItem="nhV-IT-5H9" firstAttribute="top" secondItem="RpQ-GS-UE9" secondAttribute="bottom" constant="4" id="lf3-Bh-V33"/>
+                            <constraint firstAttribute="trailing" secondItem="nhV-IT-5H9" secondAttribute="trailing" id="nQl-cw-lOg"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="0su-n1-F7r">
+                        <barButtonItem key="rightBarButtonItem" title="Pick Photos" id="Wd8-Tz-yH1">
+                            <connections>
+                                <action selector="launchImagePicker:" destination="vXZ-lx-hvc" id="alQ-Ql-TsF"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="imageView" destination="nhV-IT-5H9" id="bON-6T-asf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="604" y="161"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="acB-eY-IZR">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="sKA-tP-EQS" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="PXU-Cz-6Sn">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="pQG-xS-MP7"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iZL-Af-KAI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="111" y="161"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

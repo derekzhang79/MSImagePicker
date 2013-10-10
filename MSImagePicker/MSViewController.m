@@ -13,6 +13,13 @@
 @implementation MSViewController
 
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.automaticallyAdjustsScrollViewInsets = NO;
+}
+
+
 - (void)launchImagePicker:(id)sender
 {
     
