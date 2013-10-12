@@ -78,7 +78,7 @@ static NSString *PhotoCellIdentifier = @"PhotoCellIdentifier";
 {
     [super viewDidLoad];
     
-    self.navigationItem.title = @"Select Photos";
+    self.navigationItem.title = @"Photos";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                            target:self
                                                                                            action:@selector(finishPickingMedia)];
@@ -92,7 +92,7 @@ static NSString *PhotoCellIdentifier = @"PhotoCellIdentifier";
     layout.itemSize = CGSizeMake(75.0f, 75.0f);
     layout.minimumInteritemSpacing = 4.0f;
     layout.minimumLineSpacing = 4.0f;
- 
+    
     _assets = [[NSMutableArray alloc] init];
     _selectedAssets = [[NSMutableArray alloc] init];
     [self loadPhotos];

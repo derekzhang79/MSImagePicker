@@ -9,7 +9,6 @@
 #import "MSAlbumViewController.h"
 #import "MSImagePickerController.h"
 #import "MSImageViewController.h"
-#import <AssetsLibrary/AssetsLibrary.h>
 
 
 #pragma mark -
@@ -135,8 +134,6 @@
 
 #pragma mark -
 #pragma Table View Delegate
-
-
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 95.0f;
@@ -147,7 +144,6 @@
 {
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     MSImageViewController *controller = [[MSImageViewController alloc] initWithCollectionViewLayout:layout];
-    
     controller.assetsGroup = [_albums objectAtIndex:indexPath.row];
     
     [self.navigationController pushViewController:controller animated:YES];
