@@ -51,9 +51,9 @@
     [super viewDidLoad];
 
     self.navigationItem.title = @"Album";
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                           target:self
-                                                                                           action:@selector(cancelPickingMedia)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                          target:self
+                                                                                          action:@selector(cancelPickingMedia)];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.rowHeight = DEFAULT_ROW_HEIGHT;
     
@@ -87,13 +87,13 @@
 
 - (void)cancelPickingMedia
 {
-    [self dismissViewControllerAnimated:YES completion:^{
-        MSImagePickerController *picker = (MSImagePickerController *)self.navigationController;
-        if (picker.delegate &&
-            [picker.delegate respondsToSelector:@selector(MSImagePickerControllerDidCancel:)]) {
-            [picker.delegate MSImagePickerControllerDidCancel:picker];
-        }
-    }];
+    [self dismissViewControllerAnimated:YES completion:NULL];
+
+    MSImagePickerController *picker = (MSImagePickerController *)self.navigationController;
+    if (picker.delegate &&
+        [picker.delegate respondsToSelector:@selector(MSImagePickerControllerDidCancel:)]) {
+        [picker.delegate MSImagePickerControllerDidCancel:picker];
+    }
 }
 
 

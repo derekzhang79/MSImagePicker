@@ -54,9 +54,12 @@
     NSMutableArray *_selectedAssets;
 }
 
-- (void)loadPhotos;
-- (void)finishPickingMedia;
-- (NSDictionary *)makeMediaInfoWithAsset:(ALAsset *)asset;
+- (void)_setupNavigationBar;
+- (void)_setupCollectionView;
+
+- (void)_loadPhotos;
+- (void)_finishPickingMedia;
+- (NSDictionary *)_makeMediaInfoWithAsset:(ALAsset *)asset;
 
 @end
 
@@ -74,14 +77,42 @@ static NSString *PhotoCellIdentifier = @"PhotoCellIdentifier";
 }
 
 
+#pragma mark - 
+#pragma mark - Set up 
 - (void)viewDidLoad
 {
+    _assets = [[NSMutableArray alloc] init];
+    _selectedAssets = [[NSMutableArray alloc] init];
+    
     [super viewDidLoad];
     
+    [self _setupNavigationBar];
+    [self _setupCollectionView];
+    [self _loadPhotos];
+}
+
+
+- (void)_setupNavigationBar
+{
     self.navigationItem.title = @"Photos";
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                           target:self
-                                                                                           action:@selector(finishPickingMedia)];
+    
+    MSImagePickerController *picker = (MSImagePickerController *)self.navigationController;
+    if (picker.finishPickingBarButtonItem != nil) {
+        picker.finishPickingBarButtonItem.target = self;
+        picker.finishPickingBarButtonItem.action = @selector(_finishPickingMedia);
+    }
+    else {
+        picker.finishPickingBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                          target:self
+                                                                                          action:@selector(_finishPickingMedia)];
+    }
+    
+    self.navigationItem.rightBarButtonItem = nil;   // only show the button after user selecting images
+}
+
+
+- (void)_setupCollectionView
+{
     self.collectionView.backgroundColor = [UIColor whiteColor];
     self.collectionView.allowsSelection = YES;
     self.collectionView.allowsMultipleSelection = YES;
@@ -92,14 +123,10 @@ static NSString *PhotoCellIdentifier = @"PhotoCellIdentifier";
     layout.itemSize = CGSizeMake(75.0f, 75.0f);
     layout.minimumInteritemSpacing = 4.0f;
     layout.minimumLineSpacing = 4.0f;
-    
-    _assets = [[NSMutableArray alloc] init];
-    _selectedAssets = [[NSMutableArray alloc] init];
-    [self loadPhotos];
 }
 
 
-- (void)loadPhotos
+- (void)_loadPhotos
 {
     [self.assetsGroup enumerateAssetsWithOptions:NSEnumerationReverse
                                       usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
@@ -112,11 +139,11 @@ static NSString *PhotoCellIdentifier = @"PhotoCellIdentifier";
 }
 
 
-- (void)finishPickingMedia
+- (void)_finishPickingMedia
 {
     NSMutableArray *returnArray = [[NSMutableArray alloc] init];
     for (ALAsset *asset in _selectedAssets) {
-        [returnArray addObject:[self makeMediaInfoWithAsset:asset]];
+        [returnArray addObject:[self _makeMediaInfoWithAsset:asset]];
     }
 
     MSImagePickerController *picker = (MSImagePickerController *)self.navigationController;
@@ -127,7 +154,7 @@ static NSString *PhotoCellIdentifier = @"PhotoCellIdentifier";
 }
 
 
-- (NSDictionary *)makeMediaInfoWithAsset:(ALAsset *)asset
+- (NSDictionary *)_makeMediaInfoWithAsset:(ALAsset *)asset
 {
     NSMutableDictionary *info = [[NSMutableDictionary alloc] init];
     
@@ -163,32 +190,45 @@ static NSString *PhotoCellIdentifier = @"PhotoCellIdentifier";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    // highlight this cell with overlay image
     ImageViewCell *cell = (ImageViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
     cell.overlayImageView = [[UIImageView alloc] initWithImage:self.selectionImage];
     
+    // add to selected assets
     ALAsset *asset = [_assets objectAtIndex:indexPath.row];
     [_selectedAssets addObject:asset];
     
+    // show Done Button if this is the first selection
     MSImagePickerController *picker = (MSImagePickerController *)self.navigationController;
+    if (_selectedAssets.count > 0 && self.navigationItem.rightBarButtonItem == nil) {
+        self.navigationItem.rightBarButtonItem = picker.finishPickingBarButtonItem;
+    }
+    
     if (picker.delegate &&
         [picker.delegate respondsToSelector:@selector(MSImagePickerController:didSelectMediaWithInfo:)]) {
-        [picker.delegate MSImagePickerController:picker didSelectMediaWithInfo:[self makeMediaInfoWithAsset:asset]];
+        [picker.delegate MSImagePickerController:picker didSelectMediaWithInfo:[self _makeMediaInfoWithAsset:asset]];
     }
 }
 
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    // remove the overlay image, and the asset from selected assets
     ImageViewCell *cell = (ImageViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
     [cell.overlayImageView removeFromSuperview];
 
     ALAsset *asset = [_assets objectAtIndex:indexPath.row];
     [_selectedAssets removeObject:asset];
     
+    // hide the Done button if there is no selection any more
     MSImagePickerController *picker = (MSImagePickerController *)self.navigationController;
+    if (_selectedAssets.count == 0) {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
+    
     if (picker.delegate &&
         [picker.delegate respondsToSelector:@selector(MSImagePickerController:didDeselectMediaWithInfo:)]) {
-        [picker.delegate MSImagePickerController:picker didDeselectMediaWithInfo:[self makeMediaInfoWithAsset:asset]];
+        [picker.delegate MSImagePickerController:picker didDeselectMediaWithInfo:[self _makeMediaInfoWithAsset:asset]];
     }
 }
 

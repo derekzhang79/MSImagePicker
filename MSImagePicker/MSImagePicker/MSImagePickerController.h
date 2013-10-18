@@ -27,6 +27,7 @@
 
 @interface MSImagePickerController : UINavigationController
 
+@property (nonatomic, strong) UIBarButtonItem *finishPickingBarButtonItem;
 @property (nonatomic, weak) id<MSImagePickerControllerDelegate> delegate;
 
 @end
