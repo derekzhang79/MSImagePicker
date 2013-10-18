@@ -12,7 +12,7 @@
 		A60C645018013D520087C756 /* MSImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A60C644B18013D520087C756 /* MSImageViewController.m */; };
 		A60C645118013D520087C756 /* overlay-1.png in Resources */ = {isa = PBXBuildFile; fileRef = A60C644C18013D520087C756 /* overlay-1.png */; };
 		A60C645218013D520087C756 /* overlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A60C644D18013D520087C756 /* overlay@2x.png */; };
-		A61840461804F56D00880D14 /* MSMultiImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = A61840451804F56D00880D14 /* MSMultiImageView.m */; };
+		A631B4A21811646F002F4EE0 /* MSMultiImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = A631B4A11811646F002F4EE0 /* MSMultiImageView.m */; };
 		A6D80BF817FBD52D000E42FB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6D80BF717FBD52D000E42FB /* Foundation.framework */; };
 		A6D80BFA17FBD52D000E42FB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6D80BF917FBD52D000E42FB /* CoreGraphics.framework */; };
 		A6D80BFC17FBD52D000E42FB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6D80BFB17FBD52D000E42FB /* UIKit.framework */; };
@@ -49,8 +49,8 @@
 		A60C644B18013D520087C756 /* MSImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSImageViewController.m; sourceTree = "<group>"; };
 		A60C644C18013D520087C756 /* overlay-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "overlay-1.png"; sourceTree = "<group>"; };
 		A60C644D18013D520087C756 /* overlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "overlay@2x.png"; sourceTree = "<group>"; };
-		A61840441804F56D00880D14 /* MSMultiImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSMultiImageView.h; sourceTree = "<group>"; };
-		A61840451804F56D00880D14 /* MSMultiImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSMultiImageView.m; sourceTree = "<group>"; };
+		A631B4A01811646F002F4EE0 /* MSMultiImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MSMultiImageView.h; path = MSImagePicker/MSMultiImageView.h; sourceTree = SOURCE_ROOT; };
+		A631B4A11811646F002F4EE0 /* MSMultiImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MSMultiImageView.m; path = MSImagePicker/MSMultiImageView.m; sourceTree = SOURCE_ROOT; };
 		A6D80BF417FBD52D000E42FB /* MSImagePicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MSImagePicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6D80BF717FBD52D000E42FB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A6D80BF917FBD52D000E42FB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -116,8 +116,8 @@
 		A61840431804F56D00880D14 /* MSMultiImageView */ = {
 			isa = PBXGroup;
 			children = (
-				A61840441804F56D00880D14 /* MSMultiImageView.h */,
-				A61840451804F56D00880D14 /* MSMultiImageView.m */,
+				A631B4A01811646F002F4EE0 /* MSMultiImageView.h */,
+				A631B4A11811646F002F4EE0 /* MSMultiImageView.m */,
 			);
 			path = MSMultiImageView;
 			sourceTree = "<group>";
@@ -302,7 +302,7 @@
 				A6D80C0817FBD52D000E42FB /* MSAppDelegate.m in Sources */,
 				A6D80C0E17FBD52D000E42FB /* MSViewController.m in Sources */,
 				A60C644E18013D520087C756 /* MSAlbumViewController.m in Sources */,
-				A61840461804F56D00880D14 /* MSMultiImageView.m in Sources */,
+				A631B4A21811646F002F4EE0 /* MSMultiImageView.m in Sources */,
 				A60C645018013D520087C756 /* MSImageViewController.m in Sources */,
 				A6D80C0417FBD52D000E42FB /* main.m in Sources */,
 			);

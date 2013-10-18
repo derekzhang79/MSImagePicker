@@ -23,6 +23,8 @@
 - (void)setupImageViews;
 - (void)setupPageControl;
 
+- (void)clearImageViews;
+
 @end
 
 
@@ -96,6 +98,12 @@
 }
 
 
+- (NSArray *)imageViews
+{
+    return _imageViews;
+}
+
+
 #pragma mark -
 #pragma mark - Private Setup Methods
 - (void)setupScrollView
@@ -103,6 +111,7 @@
     if (!_scrollView) {
         _scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
         
+        _scrollView.contentSize = _scrollView.bounds.size;
         _scrollView.showsVerticalScrollIndicator = NO;
         _scrollView.showsHorizontalScrollIndicator = NO;
         _scrollView.clipsToBounds = NO;
@@ -113,40 +122,6 @@
     }
     
     [self addSubview:_scrollView];
-}
-
-
-- (void)setupImageViews
-{
-    if (!_images || _images.count == 0) {
-        return;
-    }
-    
-    CGFloat imageviewMaxWidth = _scrollView.frame.size.width - 2 * self.spacing;
-    CGSize contentSize = CGSizeMake(self.spacing, _scrollView.frame.size.height);
-    
-    NSMutableArray *imageViews = [[NSMutableArray alloc] initWithCapacity:_images.count];
-    for (UIImage *image in _images) {
-        // calculate the width of this image view
-        CGFloat ratio = image.size.width / image.size.height;
-        CGFloat width = floor(contentSize.height * ratio);
-        if (width > imageviewMaxWidth) {
-            width = imageviewMaxWidth;
-        }
-        
-        // make the view for this image
-        CGRect frame = CGRectMake(contentSize.width, 0, width, contentSize.height);
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:frame];
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
-        imageView.image = image;
-        [imageViews addObject:imageView];
-        [_scrollView addSubview:imageView];
-        
-        contentSize.width += width + self.spacing;
-    }
-    
-    _imageViews = imageViews;
-    _scrollView.contentSize = contentSize;
 }
 
 
@@ -172,6 +147,59 @@
 }
 
 
+- (void)setupImageViews
+{
+    if (!_images || _images.count == 0) {
+        [self clearImageViews];
+        return;
+    }
+    
+    CGFloat imageviewMaxWidth = _scrollView.bounds.size.width - 2 * self.spacing;
+    CGSize contentSize = CGSizeMake(self.spacing, _scrollView.bounds.size.height);
+    
+    NSMutableArray *imageViews = [[NSMutableArray alloc] initWithCapacity:_images.count];
+    for (UIImage *image in _images) {
+        // calculate the width of this image view
+        CGFloat ratio = image.size.width / image.size.height;
+        CGFloat width = floor(contentSize.height * ratio);
+        if (width > imageviewMaxWidth) {
+            width = imageviewMaxWidth;
+        }
+        
+        // make the view for this image
+        CGRect frame = CGRectMake(contentSize.width, 0, width, contentSize.height);
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:frame];
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        imageView.image = image;
+        [imageViews addObject:imageView];
+        [_scrollView addSubview:imageView];
+        
+        contentSize.width += width + self.spacing;
+    }
+    
+    [self clearImageViews];
+    
+    _imageViews = imageViews;
+    _scrollView.contentSize = contentSize;
+    
+    // if only one image, center it
+    if (_imageViews.count == 1 && contentSize.width < _scrollView.frame.size.width) {
+        CGRect frame = _scrollView.frame;
+        frame.origin.x = (frame.size.width - contentSize.width) / 2;
+        _scrollView.frame = frame;
+    }
+}
+
+
+- (void)clearImageViews
+{
+    for (UIImageView *oldImageView in _imageViews) {
+        [oldImageView removeFromSuperview];
+    }
+    _scrollView.contentOffset = CGPointMake(0, 0);
+}
+
+
 #pragma mark -
 #pragma mark - Scroll View Delegate
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
@@ -185,7 +213,19 @@
               targetContentOffset:(inout CGPoint *)targetContentOffset
 {
     CGPoint targetOffset = *targetContentOffset;
-    if (targetOffset.x <= 0 || targetOffset.x >= _scrollView.contentSize.width) {
+    if (targetOffset.x <= 0 || targetOffset.x >= scrollView.contentSize.width) {
+        if (targetOffset.x == 0) {
+            _prevIndex = _index;
+            _pageControl.currentPage = _index = 0;
+        }
+        return;
+    }
+    
+    // if the width of the last page is too small, it might not able to scroll to the last one
+    CGFloat lastPageOffsetX = scrollView.contentSize.width - scrollView.bounds.size.width;
+    if (lastPageOffsetX == targetOffset.x) {
+        _prevIndex = _index;
+        _pageControl.currentPage = _index = _imageViews.count - 1;
         return;
     }
     
@@ -199,25 +239,25 @@
             
             // if scroll to the last imageview, adjust the targetOffset
             if (i == _imageViews.count - 1) {
-                targetOffset.x = scrollView.contentSize.width - scrollView.frame.size.width;
+                targetOffset.x = lastPageOffsetX;
             }
             
             *targetContentOffset = targetOffset;
             
             _prevIndex = _index;
-            _index = i;
-            _pageControl.currentPage = i;
-            
+            _pageControl.currentPage = _index = i;
             return;
         }
     }
 }
 
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     if (self.delegate &&
-        [self.delegate respondsToSelector:@selector(MSMultiImageView:didScrollFromPage:ToPage:)]) {
+        [self.delegate respondsToSelector:@selector(MSMultiImageView:didScrollFromPage:ToPage:)] &&
+        _prevIndex != _index) {
+        
         [self.delegate MSMultiImageView:self didScrollFromPage:_prevIndex ToPage:_index];
     }
 }

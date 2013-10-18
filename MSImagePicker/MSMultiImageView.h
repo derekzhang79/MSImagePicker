@@ -27,6 +27,7 @@
 @property (nonatomic, assign, readonly) NSUInteger index;
 @property (nonatomic, assign) NSUInteger spacing;
 @property (nonatomic, strong, readwrite) NSArray *images;
+@property (nonatomic, strong, readonly) NSArray *imageViews;
 
 @property (nonatomic, weak) id<MSMultiImageViewDelegate> delegate;
 

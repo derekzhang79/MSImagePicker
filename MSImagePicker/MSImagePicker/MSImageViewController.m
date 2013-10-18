@@ -106,8 +106,9 @@ static NSString *PhotoCellIdentifier = @"PhotoCellIdentifier";
                                                                                           target:self
                                                                                           action:@selector(_finishPickingMedia)];
     }
-    
-    self.navigationItem.rightBarButtonItem = nil;   // only show the button after user selecting images
+
+    self.navigationItem.rightBarButtonItem = picker.finishPickingBarButtonItem;
+    self.navigationItem.rightBarButtonItem.enabled = NO;   // only enable the button after user selecting images
 }
 
 
@@ -198,10 +199,10 @@ static NSString *PhotoCellIdentifier = @"PhotoCellIdentifier";
     ALAsset *asset = [_assets objectAtIndex:indexPath.row];
     [_selectedAssets addObject:asset];
     
-    // show Done Button if this is the first selection
+    // enable Done Button if this is the first selection
     MSImagePickerController *picker = (MSImagePickerController *)self.navigationController;
-    if (_selectedAssets.count > 0 && self.navigationItem.rightBarButtonItem == nil) {
-        self.navigationItem.rightBarButtonItem = picker.finishPickingBarButtonItem;
+    if (_selectedAssets.count > 0 && self.navigationItem.rightBarButtonItem.enabled == NO) {
+        self.navigationItem.rightBarButtonItem.enabled = YES;
     }
     
     if (picker.delegate &&
@@ -220,10 +221,10 @@ static NSString *PhotoCellIdentifier = @"PhotoCellIdentifier";
     ALAsset *asset = [_assets objectAtIndex:indexPath.row];
     [_selectedAssets removeObject:asset];
     
-    // hide the Done button if there is no selection any more
+    // disable the Done button if there is no selection any more
     MSImagePickerController *picker = (MSImagePickerController *)self.navigationController;
     if (_selectedAssets.count == 0) {
-        self.navigationItem.rightBarButtonItem = nil;
+        self.navigationItem.rightBarButtonItem.enabled = NO;
     }
     
     if (picker.delegate &&
