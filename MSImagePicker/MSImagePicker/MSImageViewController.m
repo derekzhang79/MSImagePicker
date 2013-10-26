@@ -35,12 +35,11 @@
 
 - (void)setOverlayImageView:(UIImageView *)overlayImageView
 {
-    if (overlayImageView == nil) {
-        [self.overlayImageView removeFromSuperview];
-    }
-    else {
-        _overlayImageView = overlayImageView;
-        [self.imageView addSubview:overlayImageView];
+    [_overlayImageView removeFromSuperview];
+    _overlayImageView = overlayImageView;
+    
+    if (overlayImageView) {
+        [_imageView addSubview:overlayImageView];
     }
 }
 
@@ -158,10 +157,7 @@ static NSString *PhotoCellIdentifier = @"PhotoCellIdentifier";
 - (NSDictionary *)_makeMediaInfoWithAsset:(ALAsset *)asset
 {
     NSMutableDictionary *info = [[NSMutableDictionary alloc] init];
-    
-    UIImage *img = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage
-                                       scale:[[UIScreen mainScreen] scale]
-                                 orientation:(UIImageOrientation)asset.defaultRepresentation.orientation];
+    UIImage *img = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
     info[UIImagePickerControllerOriginalImage] = img;
     info[UIImagePickerControllerMediaType] = [asset valueForProperty:ALAssetPropertyType];
     info[UIImagePickerControllerReferenceURL] = [asset valueForProperty:ALAssetPropertyAssetURL];
@@ -184,6 +180,14 @@ static NSString *PhotoCellIdentifier = @"PhotoCellIdentifier";
                                                                          forIndexPath:indexPath];
     ALAsset *asset = [_assets objectAtIndex:indexPath.row];
     cell.imageView.image = [UIImage imageWithCGImage:asset.thumbnail];
+    
+    BOOL isSelected = [_selectedAssets containsObject:asset];
+    if ( ! isSelected ) {
+        cell.overlayImageView = nil;
+    }
+    else if ( isSelected && !cell.overlayImageView ) {
+        cell.overlayImageView = [[UIImageView alloc] initWithImage:self.selectionImage];
+    }
     
     return cell;
 }
@@ -214,10 +218,11 @@ static NSString *PhotoCellIdentifier = @"PhotoCellIdentifier";
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    // remove the overlay image, and the asset from selected assets
+    // remove the overlay image
     ImageViewCell *cell = (ImageViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-    [cell.overlayImageView removeFromSuperview];
+    cell.overlayImageView = nil;
 
+    // remove the asset from selected assets
     ALAsset *asset = [_assets objectAtIndex:indexPath.row];
     [_selectedAssets removeObject:asset];
     
